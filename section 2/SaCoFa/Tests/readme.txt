@@ -1,0 +1,1 @@
+note : for some logs I used another version of "logs_evaluation_conformance_avg" which does not saves the images of the petri nets and heuristics to save space
