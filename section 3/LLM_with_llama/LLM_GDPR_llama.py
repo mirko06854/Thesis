@@ -96,14 +96,8 @@ def generate_answers_and_responses():
             answer = answer.strip().lower()  # Normalizza la risposta
 
             output_file.write(f"## {question}\n")
-            output_file.write(f"{answer}\n\n")
+            output_file.write(f"{answer}\n\n")           
 
-    # Scrivere le attività senza consenso in un altro file
-    if activities_without_consent:
-        activities_file_name = f"activities_without_consent_{timestamp}.txt"
-        with open(activities_file_name, 'w') as activities_file:
-            activities_file.write(f"# Activities without Consent - {timestamp}\n\n")
-            activities_file.write("\n".join(activities_without_consent))
 
 # Esegui la funzione principale
 generate_answers_and_responses()
