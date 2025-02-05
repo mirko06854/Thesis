@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_new" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="17.3.0">
+  <bpmn:collaboration id="Collaboration_notification">
+    <bpmn:participant id="Participant_controller" name="Data Controller" processRef="Process_controller" />
+    <bpmn:participant id="Participant_subject" name="Data Subject" processRef="Process_subject" />
+    <bpmn:messageFlow id="Flow_notification_request" name="Notification Request" sourceRef="Participant_subject" targetRef="Event_notification_received" />
+    <bpmn:messageFlow id="Flow_notification_response" name="Notification Sent" sourceRef="Activity_notify" targetRef="Participant_subject" />
+    <bpmn:group id="Group_notification" categoryValueRef="NotificationGroup">
+      <bpmn:categoryValue id="NotificationGroup" value="GDPR Compliance" />
+    </bpmn:group>
+  </bpmn:collaboration>
+  <bpmn:process id="Process_controller">
+    <bpmn:startEvent id="Event_notification_received" name="Notification Request Received">
+      <bpmn:outgoing>Flow_check_notification</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_request" />
+    </bpmn:startEvent>
+    <bpmn:task id="Activity_check_data" name="Check Data for Notification">
+      <bpmn:dataInputAssociation id="DataInput_checkData" />
+      <bpmn:incoming>Flow_check_notification</bpmn:incoming>
+      <bpmn:outgoing>Flow_decision</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:dataStoreReference id="DataStore_notification" name="Notification Data" />
+    <bpmn:dataObjectReference id="DataObject_recipients" name="Recipients or Categories of Recipients" />
+    <bpmn:exclusiveGateway id="Gateway_decision" name="Relevant Data?">
+      <bpmn:incoming>Flow_decision</bpmn:incoming>
+      <bpmn:outgoing>Flow_notify</bpmn:outgoing>
+      <bpmn:outgoing>Flow_end_process</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Activity_notify" name="Send Notification">
+      <bpmn:dataInputAssociation id="DataInput_notify">
+        <bpmn:sourceRef>DataObject_recipients</bpmn:sourceRef>
+      </bpmn:dataInputAssociation>
+      <bpmn:incoming>Flow_notify</bpmn:incoming>
+      <bpmn:outgoing>Flow_end_notification</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="Event_end_notification" name="Notification Process Completed">
+      <bpmn:incoming>Flow_end_notification</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event_end_process" name="Process Terminated">
+      <bpmn:incoming>Flow_end_process</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_check_notification" sourceRef="Event_notification_received" targetRef="Activity_check_data" />
+    <bpmn:sequenceFlow id="Flow_decision" sourceRef="Activity_check_data" targetRef="Gateway_decision" />
+    <bpmn:sequenceFlow id="Flow_notify" name="Yes" sourceRef="Gateway_decision" targetRef="Activity_notify" />
+    <bpmn:sequenceFlow id="Flow_end_process" name="No" sourceRef="Gateway_decision" targetRef="Event_end_process" />
+    <bpmn:sequenceFlow id="Flow_end_notification" sourceRef="Activity_notify" targetRef="Event_end_notification" />
+  </bpmn:process>
+  <bpmn:process id="Process_subject">
+    <bpmn:startEvent id="Event_request_notification" name="Request Notification">
+      <bpmn:outgoing>Flow_request_notification</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_receive_notification" name="Receive Notification">
+      <bpmn:incoming>Flow_receive_notification</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_request_notification" sourceRef="Event_request_notification" targetRef="Flow_notification_request" />
+    <bpmn:sequenceFlow id="Flow_receive_notification" sourceRef="Flow_notification_response" targetRef="Event_receive_notification" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_notification">
+    <bpmndi:BPMNPlane id="BPMNPlane_notification" bpmnElement="Collaboration_notification">
+      <bpmndi:BPMNShape id="Participant_controller_di" bpmnElement="Participant_controller" isHorizontal="true">
+        <dc:Bounds x="160" y="290" width="1710" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_subject_di" bpmnElement="Participant_subject" isHorizontal="true">
+        <dc:Bounds x="160" y="100" width="1710" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_notification_received_di" bpmnElement="Event_notification_received">
+        <dc:Bounds x="222" y="552" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_check_data_di" bpmnElement="Activity_check_data">
+        <dc:Bounds x="330" y="530" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_decision_di" bpmnElement="Gateway_decision" isMarkerVisible="true">
+        <dc:Bounds x="505" y="545" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_notify_di" bpmnElement="Activity_notify">
+        <dc:Bounds x="610" y="410" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_end_notification_di" bpmnElement="Event_end_notification">
+        <dc:Bounds x="772" y="432" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_end_process_di" bpmnElement="Event_end_process">
+        <dc:Bounds x="772" y="582" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_check_notification_di" bpmnElement="Flow_check_notification">
+        <di:waypoint xsi:type="dc:Point" x="258" y="570" />
+        <di:waypoint xsi:type="dc:Point" x="330" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_decision_di" bpmnElement="Flow_decision">
+        <di:waypoint xsi:type="dc:Point" x="430" y="570" />
+        <di:waypoint xsi:type="dc:Point" x="505" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_notify_di" bpmnElement="Flow_notify">
+        <di:waypoint xsi:type="dc:Point" x="555" y="570" />
+        <di:waypoint xsi:type="dc:Point" x="610" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_end_process_di" bpmnElement="Flow_end_process">
+        <di:waypoint xsi:type="dc:Point" x="555" y="570" />
+        <di:waypoint xsi:type="dc:Point" x="772" y="600" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_end_notification_di" bpmnElement="Flow_end_notification">
+        <di:waypoint xsi:type="dc:Point" x="710" y="450" />
+        <di:waypoint xsi:type="dc:Point" x="772" y="450" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GDPR-Architect</title>
+    <!-- Stili richiesti per il viewer -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-js.css"
+    />
+
+    <!-- Script del viewer -->
+    <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-viewer.development.js"></script>
+
+    <!-- Stili richiesti per il modeler -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/diagram-js.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-js.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bpmn-js@17.0.2/dist/assets/bpmn-font/css/bpmn.css"
+    />
+
+    <!-- Script del modeler -->
+    <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-modeler.development.js"></script>
+
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </head>
+  <body>
+    <div class="status_row">
+      <div
+        id="alertContainer"
+        style="
+          position: absolute;
+          width: 80%;
+          margin-left: 10%;
+          margin-right: 10%;
+          margin-bottom: 100%;
+          z-index: 9999;
+        "
+      ></div>
+      <div class="row" style="height: 100vh">
+        <div class="col-9" style="margin-left: 13%" id="mode">Edit Mode</div>
+        <div class="col-1" style="margin-left: 3.5%">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="2vh"
+            height="2vh"
+            fill="currentColor"
+            class="bi bi-question-circle"
+            style="margin-bottom: 2%; cursor: pointer"
+            viewBox="0 0 16 16"
+            id="questionButton"
+          >
+            <path
+              d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"
+            />
+            <path
+              d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286m1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="PrimaryContainer" id="primary_container">
+      <div class="row" style="position: absolute; width: 100%">
+        <div class="col-1">
+          <div
+            id="GoBackArrow"
+            class="div"
+            style="display: none; font-size: 1.5vh"
+          >
+            Main Process
+          </div>
+        </div>
+        <div class="col-1">
+          <div id="separator" style="display: none; font-size: 1.5vh">></div>
+        </div>
+        <div class="col-2">
+          <div id="name_subprocess" style="display: none; font-size: 1.5vh">
+            Consent to use the data
+          </div>
+        </div>
+      </div>
+      <div id="over_canvas"></div>
+      <div class="row" id="canvas_raw">
+        <div class="main-column" id="canvas_col">
+          <div id="canvas"></div>
+        </div>
+        <div class="sidebar-column" id="survey_col"></div>
+
+        <!-- settings area for the functions: export, import, check GDPR -->
+        <div class="row" id="settings_area">
+          <!-- import -->
+          <div class="col-setting">
+            <div id="import_button">
+              <svg
+                fill="#555555"
+                class="button-icon"
+                viewBox="0 0 1024 1024"
+                xmlns="http://www.w3.org/2000/svg"
+                class="icon"
+              >
+                <path
+                  d="M928 444H820V330.4c0-17.7-14.3-32-32-32H473L355.7 186.2a8.15 8.15 0 0 0-5.5-2.2H96c-17.7 0-32 14.3-32 32v592c0 17.7 14.3 32 32 32h698c13 0 24.8-7.9 29.7-20l134-332c1.5-3.8 2.3-7.9 2.3-12 0-17.7-14.3-32-32-32zM136 256h188.5l119.6 114.4H748V444H238c-13 0-24.8 7.9-29.7 20L136 643.2V256zm635.3 512H159l103.3-256h612.4L771.3 768z"
+                />
+              </svg>
+            </div>
+            <div class="label_button" id="label_import_button">Import</div>
+          </div>
+          <!-- end import -->
+          <!-- export -->
+          <div class="col-setting">
+            <div id="export_button">
+              <svg
+                class="button-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 13V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V13"
+                  stroke="#555555"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12 3L12 15M12 15L8.5 11.5M12 15L15.5 11.5"
+                  stroke="#555555"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="label_button" id="label_export_button">Export</div>
+          </div>
+          <!-- end export -->
+        </div>
+
+        <div class="row" id="settings_area_gdpr">
+          <!-- GDPR compliant -->
+          <div class="col-setting">
+            <button id="gdpr_compliant_button" class="button-gdpr"></button>
+            <div class="label_button_gdpr" id="label_gdpr_compliance_button">
+              Ensure GDPR compliance
+            </div>
+          </div>
+          <!-- end GDPR compliant -->
+          <div class="col-setting">
+            <svg
+              id="undo_button"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="#555555"
+              class="button-icon bi bi-arrow-counterclockwise"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z"
+              />
+              <path
+                d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466"
+              />
+            </svg>
+            <div class="label_button_undo_gdpr" id="label_button_undo_gdpr">
+              Reset GDPR Changes
+            </div>
+          </div>
+        </div>
+
+        <!-- end settings area -->
+      </div>
+    </div>
+
+    <script src="app.bundle.js"></script>
+  </body>
+</html>

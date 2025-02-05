@@ -1,0 +1,87 @@
+{
+  "name": "MetaInfoExtension",
+  "uri": "http://example.com/schema/bpmn/custom",
+  "prefix": "meta",
+  "xml": {
+    "tagAlias": "lowerCase"
+  },
+  "types": [
+    {
+      "name": "ModelMetaData",
+      "superClass": ["Element"],
+      "properties": [
+        {
+          "name": "gdpr_compliant",
+          "isAttr": true,
+          "type": "boolean"
+        },
+        {
+          "name": "questionA",
+          "isAttr": true,
+          "type": "String",
+          "value": "personal_data_handling_question"
+        },
+        {
+          "name": "questionB",
+          "isAttr": true,
+          "type": "String",
+          "value": "consent_to_use_the_data_question"
+        },
+        {
+          "name": "questionC",
+          "isAttr": true,
+          "type": "String",
+          "value": "access_to_data_question"
+        },
+        {
+          "name": "questionD",
+          "isAttr": true,
+          "type": "String",
+          "value": "data_portability_question"
+        },
+        {
+          "name": "questionE",
+          "isAttr": true,
+          "type": "String",
+          "value": "rectification_question"
+        },
+        {
+          "name": "questionF",
+          "isAttr": true,
+          "type": "String",
+          "value": "consent_to_data_processing_question"
+        },
+        {
+          "name": "questionG",
+          "isAttr": true,
+          "type": "String",
+          "value": "consent_to_automated_processing_question"
+        },
+        {
+          "name": "questionH",
+          "isAttr": true,
+          "type": "String",
+          "value": "consent_to_data_processing_rectification_question"
+        },
+        {
+          "name": "questionI",
+          "isAttr": true,
+          "type": "String",
+          "value": "right_to_be_forgotten_question"
+        },
+        {
+          "name": "questionL",
+          "isAttr": true,
+          "type": "String",
+          "value": "right_to_be_informed_about_data_breach_question"
+        },
+        {
+          "name": "questionM",
+          "isAttr": true,
+          "type": "String",
+          "value": "right_to_notification"
+        }
+      ]
+    }
+  ]
+}

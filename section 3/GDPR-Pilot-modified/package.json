@@ -1,0 +1,50 @@
+{
+  "name": "thesis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --open --mode development --static ./public",
+    "server": "cd src/js && node openAIcaller.js",
+    "setup": "npm install && npm run start && npm run server",
+    "dev": "concurrently \"npm run start\" \"npm run server\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@bpmn-io/properties-panel": "^3.18.2",
+    "@dqbd/tiktoken": "^1.0.15",
+    "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "bpmn-auto-layout": "^0.5.0",
+    "bpmn-js": "^17.2.2",
+    "bpmn-js-properties-panel": "^5.14.0",
+    "bpmn-moddle": "^9.0.1",
+    "buffer": "^6.0.3",
+    "cors": "^2.8.5",
+    "crypto-browserify": "^3.12.0",
+    "diagram-js-grid": "^1.0.0",
+    "dotenv": "^16.4.5",
+    "gpt-3-encoder": "^1.1.4",
+    "jquery": "^3.7.1",
+    "openai": "^4.79.1",
+    "os-browserify": "^0.3.0",
+    "path": "^0.12.7",
+    "path-browserify": "^1.0.1",
+    "stream-browserify": "^3.0.0",
+    "vm-browserify": "^1.1.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "css-loader": "^6.10.0",
+    "eslint": "^9.4.0",
+    "file-loader": "^6.2.0",
+    "npm-run-all": "^4.1.5",
+    "raw-loader": "^4.0.2",
+    "style-loader": "^3.3.4",
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
+  }
+}

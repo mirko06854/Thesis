@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Collaboration_1">
+    <!-- Partecipanti -->
+    <bpmn:participant id="Participant_DataController" name="Data Controller" processRef="Process_DataController" />
+    <bpmn:participant id="Participant_DataSubject" name="Data Subject" processRef="Process_DataSubject" />
+
+    <!-- Flussi di messaggi -->
+    <bpmn:messageFlow id="MessageFlow_RequestNotification" name="Request Notification" sourceRef="Task_RequestNotification" targetRef="Task_ReceiveRequest" />
+    <bpmn:messageFlow id="MessageFlow_SendNotification" name="Send Notification" sourceRef="Task_SendNotification" targetRef="Task_ReceiveNotification" />
+  </bpmn:collaboration>
+
+  <!-- Processo del Data Controller -->
+  <bpmn:process id="Process_DataController" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_Controller" name="Start">
+      <bpmn:outgoing>Flow_StartToRequest</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_RequestNotification" name="Request Notification">
+      <bpmn:incoming>Flow_StartToRequest</bpmn:incoming>
+      <bpmn:outgoing>Flow_RequestToVerify</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="Gateway_Verify" name="Verify Request">
+      <bpmn:incoming>Flow_RequestToVerify</bpmn:incoming>
+      <bpmn:outgoing>Flow_VerifyToSend</bpmn:outgoing>
+      <bpmn:outgoing>Flow_VerifyToReject</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_SendNotification" name="Send Notification">
+      <bpmn:incoming>Flow_VerifyToSend</bpmn:incoming>
+      <bpmn:outgoing>Flow_SendToEnd</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_Controller" name="End">
+      <bpmn:incoming>Flow_SendToEnd</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_StartToRequest" sourceRef="StartEvent_Controller" targetRef="Task_RequestNotification" />
+    <bpmn:sequenceFlow id="Flow_RequestToVerify" sourceRef="Task_RequestNotification" targetRef="Gateway_Verify" />
+    <bpmn:sequenceFlow id="Flow_VerifyToSend" sourceRef="Gateway_Verify" targetRef="Task_SendNotification" />
+    <bpmn:sequenceFlow id="Flow_SendToEnd" sourceRef="Task_SendNotification" targetRef="EndEvent_Controller" />
+    <bpmn:sequenceFlow id="Flow_VerifyToReject" sourceRef="Gateway_Verify" targetRef="EndEvent_Controller" />
+  </bpmn:process>
+
+  <!-- Processo del Data Subject -->
+  <bpmn:process id="Process_DataSubject" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_Subject" name="Start">
+      <bpmn:outgoing>Flow_StartToReceive</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_ReceiveRequest" name="Receive Request">
+      <bpmn:incoming>Flow_StartToReceive</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveToReceiveNotification</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_ReceiveNotification" name="Receive Notification">
+      <bpmn:incoming>Flow_ReceiveToReceiveNotification</bpmn:incoming>
+      <bpmn:outgoing>Flow_ReceiveToEnd</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_Subject" name="End">
+      <bpmn:incoming>Flow_ReceiveToEnd</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_StartToReceive" sourceRef="StartEvent_Subject" targetRef="Task_ReceiveRequest" />
+    <bpmn:sequenceFlow id="Flow_ReceiveToReceiveNotification" sourceRef="Task_ReceiveRequest" targetRef="Task_ReceiveNotification" />
+    <bpmn:sequenceFlow id="Flow_ReceiveToEnd" sourceRef="Task_ReceiveNotification" targetRef="EndEvent_Subject" />
+  </bpmn:process>
+
+  <!-- Diagramma BPMN -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <!-- Data Controller -->
+      <bpmndi:BPMNShape id="ParticipantShape_DataController" bpmnElement="Participant_DataController">
+        <dc:Bounds x="100" y="100" width="600" height="250" />
+      </bpmndi:BPMNShape>
+      <!-- Data Subject -->
+      <bpmndi:BPMNShape id="ParticipantShape_DataSubject" bpmnElement="Participant_DataSubject">
+        <dc:Bounds x="100" y="400" width="600" height="150" />
+      </bpmndi:BPMNShape>
+      <!-- Flussi di messaggi -->
+      <bpmndi:BPMNEdge id="MessageFlowEdge_RequestNotification" bpmnElement="MessageFlow_RequestNotification">
+        <di:waypoint x="350" y="200" />
+        <di:waypoint x="350" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="MessageFlowEdge_SendNotification" bpmnElement="MessageFlow_SendNotification">
+        <di:waypoint x="450" y="200" />
+        <di:waypoint x="450" y="450" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
