@@ -1,0 +1,18 @@
+Consent response for 'Enter restaurant': yes
+Consent response for 'Choose dish': yes
+Consent response for 'Place order': yes
+Consent response for 'Pay money': no, because i would want to know what i'm paying for and how much i'm paying before giving consent.
+Consent response for 'Take buzzer': yes
+Consent response for 'Get meal': yes
+Consent response for 'Eat meal': yes
+Consent response for 'Enter order': yes
+Consent response for 'Collect money': no, because i don't see how collecting money is related to the process of ordering and picking up a meal at a self-service restaurant, and i wouldn't want my payment information to be used for any other purpose without my explicit consent.
+Consent response for 'Set up buzzer': yes
+Consent response for 'Hand over buzzer': yes
+Consent response for 'Inform chef': yes
+Consent response for 'Set off buzzer': yes
+Consent response for 'Hand over meal': yes
+Consent response for 'Call guest': no, because i don't want to be disturbed by a call if i'm busy or not ready to pick up my meal yet, and i'd prefer to rely on the buzzer alert.
+Consent response for 'Prepare meal': yes
+Consent response for 'Place meal in hatch': no, because i don't understand what "place meal in hatch" means in the context of this restaurant process.
+Consent response for 'Inform employee': yes

@@ -1,0 +1,11 @@
+Do you handle personal data in your process?
+Did you ask for consent before?
+Do you allow users to access their data?
+Do you allow users to port their data?
+Do you allow users to rectify their data?
+Do you allow users to object to data processing?
+Do you allow users to object to automated processing?
+Do you allow users to restrict processing on their data?
+Do you allow users to be forgotten?
+Do you allow users to be informed of data breaches occurred to their data?
+Do you allow users to transfer their data to another service?
