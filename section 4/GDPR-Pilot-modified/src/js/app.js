@@ -1,3 +1,4 @@
+import { loadAnswersAndColorButtons } from "./loadAnswers.js";
 import BpmnJS from "bpmn-js/dist/bpmn-modeler.production.min.js";
 import "bpmn-js/dist/assets/diagram-js.css";
 import "bpmn-js/dist/assets/bpmn-font/css/bpmn.css";
@@ -2926,6 +2927,7 @@ export function colorActivity(activityId) {
   });
 }
 
+
 export function decolorActivity(activityId) {
   const activity = elementRegistry.get(activityId);
   modeling.setColor([activity], null);
@@ -3548,6 +3550,9 @@ async function addNotes(content) {
 
   return content;
 }
+
+// Carica i dati e colora i bottoni all'avvio
+loadAnswersAndColorButtons();
 
 // Add an event listener for the custom event
 document.addEventListener("removeGif", function (e) {

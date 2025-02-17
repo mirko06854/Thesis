@@ -1,0 +1,1 @@
+note that the files "activities.txt" and "answers".json need to then be used into the front end

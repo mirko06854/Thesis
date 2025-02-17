@@ -90,14 +90,51 @@ export async function nodropDownA() {
 }
 //end handle click no for question A
 
-//handle click no for question B
-export async function nodropDownB(activities_already_selected, isLast) {
+export async function nodropDownB(activities_already_selected, isLast) {  // modified to handle LLM back end !
   editMetaInfo("B", setJsonData("No", false));
+
+  // Fetch activities.txt
+  let restrictedActivities = [];
+  try {
+    const response = await fetch("http://localhost:8000/activities.txt");
+    if (!response.ok) {
+      throw new Error(`Network error: ${response.status}`);
+    }
+    const text = await response.text();
+    const lines = text.split("\n").map(name => name.trim());
+    restrictedActivities = lines.slice(1); // Skip first line
+  } catch (error) {
+    console.error("Error fetching restricted activities:", error);
+  }
+
+  // Wait for the UI to generate checkboxes
   await createUlandSelectActivities(
     "#dropDownB",
     "Select the activities where you request personal data for the first time",
     activities_already_selected
   );
+
+  // Add a slight delay to ensure elements exist
+  setTimeout(() => {
+    document.querySelectorAll("#dropDownB div").forEach(div => {
+      const checkbox = div.querySelector("input[type='checkbox']");
+      const label = div.querySelector("label");
+      if (!checkbox || !label) return;
+
+      const activityName = label.innerText.trim();
+      if (restrictedActivities.includes(activityName)) {
+        div.style.backgroundColor = "lightgrey"; // Keep background grey
+        checkbox.style.accentColor = "grey"; // Checkbox remains grey
+        checkbox.style.backgroundColor = "grey"; // Background stays grey
+
+        // Ensure background stays grey even after selection
+        checkbox.addEventListener("change", () => {
+          div.style.backgroundColor = "lightgrey"; // Reapply grey background on change
+        });
+      }
+    });
+  }, 100); // Small delay to allow DOM update
+
   if (activities_already_selected) {
     questionDone("#dropDownB");
     await checkDropDownOrdAdd(
@@ -109,6 +146,11 @@ export async function nodropDownB(activities_already_selected, isLast) {
   }
   allowOpenNextQuestion("C");
 }
+
+
+
+
+
 //
 
 // Handle click No for question M (Data Notification)
@@ -491,18 +533,51 @@ async function checkDropDownOrdAdd(
 //function to edit the color of the button
 //idButton the id of the yes/no button i have to edit
 //if id: yes then yes will have the green border and no the black one
-function editYesNoButton(idButton) {
-  const button = document.querySelector(idButton);
-  button.style.border = "0.3vh solid #10ad74";
-  const other_button_name = idButton.split("_");
-  if (other_button_name[0] == "#yes") {
-    const other = document.querySelector("#no_" + other_button_name[1]);
-    other.style.border = "0.01vh solid black";
-  } else {
-    const other = document.querySelector("#yes_" + other_button_name[1]);
-    other.style.border = "0.01vh solid black";
-  }
+async function editYesNoButton(idButton) {
+  try {
+    // Fetch AI-generated answers
+    const response = await fetch("http://localhost:8000/answers.json");
+    if (!response.ok) {
+        throw new Error(`Network error: ${response.status}`);
+    }
+    const answers = await response.json();
+
+    // Letters representing each question
+    const questionLetters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "L", "M"];
+
+    questionLetters.forEach(letter => {
+        const aiAnswer = answers["question" + letter]?.toLowerCase();
+        if (!aiAnswer) return; // Skip if no AI answer
+
+        // Select correct and incorrect buttons
+        const correctButtonId = aiAnswer === "yes" ? `#yes_dropDown${letter}` : `#no_dropDown${letter}`;
+        const wrongButtonId = aiAnswer === "yes" ? `#no_dropDown${letter}` : `#yes_dropDown${letter}`;
+
+        const correctButton = document.querySelector(correctButtonId);
+        const wrongButton = document.querySelector(wrongButtonId);
+
+        // Apply colors
+        if (correctButton) {
+            correctButton.style.border = "0.3vh solid #10ad74"; // Green for correct
+            correctButton.style.backgroundColor = "#10ad74"; // Green background
+            correctButton.style.color = "white"; // White text
+        }
+
+        if (wrongButton) {
+            wrongButton.style.border = "0.01vh solid black"; // Reset incorrect
+            wrongButton.style.backgroundColor = "white"; // Reset background to white
+            wrongButton.style.color = "black"; // Reset text color
+        }
+    });
+
+} catch (error) {
+    console.error("Error loading answers:", error);
 }
+}
+
+// Call the function when the page loads
+//document.addEventListener("DOMContentLoaded", editYesNoButton);
+
 //
 
 function enableButtons() {

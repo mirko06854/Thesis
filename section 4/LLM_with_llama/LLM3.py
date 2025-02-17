@@ -68,10 +68,10 @@ def ask_for_consent(client, activity_name):
 # Funzione principale per generare il file di output
 def generate_activities_with_no_consent_file():
     # Inizializza il client Groq
-    client = Groq(api_key='PUT HERE YOUR API_KEY')
+    client = Groq(api_key='PUT_YOUR_API_KEY_HERE')
 
     # Carica le attività dal file BPMN
-    activities = parse_bpmn_for_activities(r'C:\Users\ferru\Desktop\parte2 tesi tests\self-service-restaurant.bpmn')  // pointer to my bpmn file
+    activities = parse_bpmn_for_activities(r'C:\Users\ferru\Desktop\parte2 tesi tests\self-service-restaurant.bpmn')  # you need to change the paths depending on where you save the files
     
     # Elenco per raccogliere le attività senza consenso
     activities_without_consent = []
@@ -86,7 +86,8 @@ def generate_activities_with_no_consent_file():
     
     # Crea il file di output con le attività senza consenso
     timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    output_file_name = f"activities_without_consent_{timestamp}.txt"
+    output_file_name = "activities.txt"
+
     
     with open(output_file_name, 'w') as output_file:
         output_file.write(f"# Activities without consent - {timestamp}\n\n")
