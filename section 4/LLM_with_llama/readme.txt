@@ -3,3 +3,9 @@ this is a tool to use along with GDPR pilot. Since GDPR pilot use an LLM base on
 to create your api key you must go to this site groqcloud: https://console.groq.com/playground . Then log-in and go to the section API-keys and then you can create your own api key. Then copy and paste it in the section where I wrote : PUT_YOUR_API_KEY (within the ' ' ). That is, in files : "LLM_GDPR_llama.py" and "LLM3.py".
 
 If you want, you can use my key too if you do not manage to create you api key or to save time. My personal key is encrypted in the archive key.zip. Write me if you need it and I give you do password to extract the key.
+
+Note that the files "activities.txt" and "answers".json need to then be used into the front end.
+
+Moreover, to run the file server.py, if you do not have already installed, you need to install the required dependencies using:
+
+"pip install flask flask-cors"
